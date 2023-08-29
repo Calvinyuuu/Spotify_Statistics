@@ -1,4 +1,4 @@
-// Replace with your client ID
+const clientId = ""; // Replace with your client ID
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 
