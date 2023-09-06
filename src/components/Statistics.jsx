@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 
 const params = new URLSearchParams(window.location.search);
+const { protocol, port, hostname } = window.location;
+const redirectURL = `${protocol}//${hostname}:${port}/callback`
 
 async function redirectToAuthCodeFlow(clientId) {
     const verifier = generateCodeVerifier(128);
@@ -12,7 +14,7 @@ async function redirectToAuthCodeFlow(clientId) {
     const params = new URLSearchParams();
     params.append("client_id", clientId);
     params.append("response_type", "code");
-    params.append("redirect_uri", "http://localhost:5173/callback");
+    params.append("redirect_uri", redirectURL);
     //need to change this depending on what im requesting.
     params.append("scope", "user-read-private user-read-email user-read-playback-state user-modify-playback-state user-read-recently-played user-top-read");
     params.append("code_challenge_method", "S256");
@@ -47,7 +49,7 @@ async function getAccessToken(clientId, code) {
     params.append("client_id", clientId);
     params.append("grant_type", "authorization_code");
     params.append("code", code);
-    params.append("redirect_uri", "http://localhost:5173/callback");
+    params.append("redirect_uri", redirectURL);
     params.append("code_verifier", verifier);
 
     const result = await fetch("https://accounts.spotify.com/api/token", {
@@ -60,16 +62,26 @@ async function getAccessToken(clientId, code) {
     return access_token;
 }
 
-async function topTracks(token) {
-    const result = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=10", {
-        method: "GET", headers: { Authorization: `Bearer ${token}` }
-    });
+async function topTracks(token, length) {
+    let endpoint = "https://api.spotify.com/v1/me/top/tracks?limit=10";
+    if (length != undefined) {
+        endpoint = endpoint += "&time_range=" + length
+    }
+    //maybe do a try catch here
 
-    return await result.json();
+    if (token) {
+        const result = await fetch(endpoint, {
+            method: "GET", headers: { Authorization: `Bearer ${token}` }
+        });
+
+        return await result.json();
+    } else {
+        return "";
+    }
 }
 
-function populateTracks(tracks) {
-    const list = document.getElementById("trackList")
+function populateTracks(tracks, term) {
+    const list = document.getElementById(term)
     if (tracks.items != undefined) {
         tracks.items.forEach(element => {
             const item = document.createElement("li");
@@ -78,18 +90,22 @@ function populateTracks(tracks) {
         });
     }
 }
-const code = params.get("code");
 function Statistics() {
+
     useEffect(() => {
         async function fetchData() {
+            const code = params.get("code");
             if (!code) {
                 redirectToAuthCodeFlow(clientId);
             } else {
                 const accessToken = await getAccessToken(clientId, code);
-                if (accessToken != undefined) {
-                    const tracks = await topTracks(accessToken);
-                    populateTracks(tracks);
-                }
+                const short_term_tracks = await topTracks(accessToken, "short_term");
+                console.log(short_term_tracks.items[0].album.images[0]);
+                const medium_term_tracks = await topTracks(accessToken, "medium_term");
+                const long_term_tracks = await topTracks(accessToken, "long_term");
+                populateTracks(short_term_tracks, "short");
+                populateTracks(medium_term_tracks, "medium");
+                populateTracks(long_term_tracks, "long");
             }
         }
 
@@ -98,11 +114,36 @@ function Statistics() {
 
     return (
         <div id="tracks">
-            <ol id="trackList">
+            <h2>Past Month</h2>
+            <ol id="short" />
 
-            </ol>
+            <h2>Past Six Months</h2>
+            <ol id="medium" />
+
+            <h2>Total history</h2>
+            <ol id="long" />
         </div>
     );
 }
 
 export default Statistics;
+
+//setting the album src
+// <img id="picture" />
+// const pic = document.getElementById("picture");
+// pic.setAttribute("src", short_term_tracks.items[0].album.images[0].url);
+
+    // useEffect(() => {
+    //     async function fetchData() {
+    //         const code = params.get("code");
+    //         if (!code) {
+    //             redirectToAuthCodeFlow(clientId);
+    //         } else {
+    //             const accessToken = await getAccessToken(clientId, code);
+    //             const tracks = await topTracks(accessToken);
+    //             populateTracks(tracks);
+    //         }
+    //     }
+
+    //     fetchData();
+    // }, []);
