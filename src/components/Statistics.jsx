@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-
+const clientId = ""; // Replace with your 
 const params = new URLSearchParams(window.location.search);
 const { protocol, port, hostname } = window.location;
 const redirectURL = `${protocol}//${hostname}:${port}/callback`
@@ -63,7 +63,7 @@ async function getAccessToken(clientId, code) {
 }
 
 async function topTracks(token, length) {
-    let endpoint = "https://api.spotify.com/v1/me/top/tracks?limit=10";
+    let endpoint = "https://api.spotify.com/v1/me/top/tracks?limit=10"; //time_range defaults to medium_term if not specified
     if (length != undefined) {
         endpoint = endpoint += "&time_range=" + length
     }
@@ -90,6 +90,41 @@ function populateTracks(tracks, term) {
         });
     }
 }
+
+function tallyArtists(tracks) {
+    const tally = {};
+    // Initialize an empty array for combined artists
+    const combinedArtists = [];
+
+    // Iterate through the JSON data
+    tracks.forEach(item => {
+        // Concatenate the artists array with the combined artists array
+        combinedArtists.push(...item.artists);
+    });
+
+    combinedArtists.forEach(item => {
+        if (tally[item.name]) {
+            tally[item.name]++;
+        } else {
+            tally[item.name] = 1;
+        }
+    });
+
+    // The combinedArtists array now contains all the artists from the JSON data
+    console.log(tally);
+    const dataArray = Object.entries(tally);
+    dataArray.sort((a, b) => b[1] - a[1]);
+    return dataArray;
+}
+function populateTopArtists(artists) {
+    const list = document.getElementById("artists");
+    artists.forEach(element => {
+        const item = document.createElement("li");
+        item.textContent = element[0];
+        list.appendChild(item);
+    })
+}
+
 function Statistics() {
 
     useEffect(() => {
@@ -98,14 +133,28 @@ function Statistics() {
             if (!code) {
                 redirectToAuthCodeFlow(clientId);
             } else {
-                const accessToken = await getAccessToken(clientId, code);
-                const short_term_tracks = await topTracks(accessToken, "short_term");
-                console.log(short_term_tracks.items[0].album.images[0]);
-                const medium_term_tracks = await topTracks(accessToken, "medium_term");
-                const long_term_tracks = await topTracks(accessToken, "long_term");
-                populateTracks(short_term_tracks, "short");
-                populateTracks(medium_term_tracks, "medium");
-                populateTracks(long_term_tracks, "long");
+                try {
+                    const accessToken = await getAccessToken(clientId, code);
+
+                    const [short_term_tracks, medium_term_tracks, long_term_tracks] = await Promise.all([
+                        topTracks(accessToken, "short_term"),
+                        topTracks(accessToken, "medium_term"),
+                        topTracks(accessToken, "long_term"),
+                    ]);
+                    const combineTerms = [...short_term_tracks.items, ...medium_term_tracks.items, ...long_term_tracks.items];
+                    // console.log(combineTerms);
+                    const talliedArtists = tallyArtists(combineTerms);
+                    console.log(talliedArtists);
+                    populateTopArtists(talliedArtists.slice(0, 10));
+
+                    populateTracks(short_term_tracks, "short");
+                    populateTracks(medium_term_tracks, "medium");
+                    populateTracks(long_term_tracks, "long");
+
+                } catch (error) {
+                    console.log(error);
+                }
+
             }
         }
 
@@ -114,6 +163,9 @@ function Statistics() {
 
     return (
         <div id="tracks">
+            <h2>Most listened to Artists from recent tracks</h2>
+            <ol id="artists" />
+
             <h2>Past Month</h2>
             <ol id="short" />
 
