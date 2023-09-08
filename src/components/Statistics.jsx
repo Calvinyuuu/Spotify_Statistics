@@ -80,60 +80,54 @@ async function topTracks(token, length) {
     }
 }
 
-<div id="listParent">
-    <div id="albumCoverParent">
-        <div id="albumCoverChildren">
-            <h3>Album Title</h3>
-            <img>actual image</img>
-        </div>
-        <div id="albumCoverChildren">
-            <h3>Album Title</h3>
-            <img>actual image</img>
-        </div>
-        <div id="albumCoverChildren">
-            <h3>Album Title</h3>
-            <img>actual image</img>
-        </div>
-    </div>
+function populateTracks(tracks) {
+    try {
+        const tracksWithHeaders = tracks.items.slice(0, 3);
+        const tracksInListBeg = tracks.items.slice(3, 10);
+        const tracksInListEnd = tracks.items.slice(10, 20);
+        return (
+            <>
+                {tracksWithHeaders.length && (
+                    <div className="flex">
+                        {tracksWithHeaders.map((track) => (
+                            <div key={track.id}>
+                                <h3>
+                                    {track.name}
+                                </h3>
+                                <img src={track.album.images[0].url}></img>
+                            </div>
+                        ))}
+                    </div>
+                )}
+                <div className="flex">
+                    {tracksInListBeg.length && (
+                        <div>
+                            <ol start="4" className="px-4">
+                                {tracksInListBeg.map((track) => (
+                                    <li key={track.id}>
+                                        {track.name}
+                                    </li>
+                                ))}
+                            </ol>
+                        </div>
+                    )}
+                    {tracksInListEnd.length && (
+                        <div>
+                            <ol start="11" className="px-4">
+                                {tracksInListEnd.map((track) => (
+                                    <li key={track.id}>
+                                        {track.name}
+                                    </li>
+                                ))}
+                            </ol>
+                        </div>
+                    )}
+                </div>
 
-    <ol>
-        <li></li>
-        <li></li>
-        <li></li>
-    </ol>
-</div>
-
-function populateTracks(tracks, term) {
-    const listParent = document.getElementById(term);
-    const albumCoverParent = document.createElement("div");
-    const trackTitles = document.createElement("ol");
-    let counter = 0;
-    trackTitles.start = 4;
-
-    if (tracks.items != undefined) {
-        tracks.items.forEach(element => {
-            //this statement is to display the album cover of the top three songs on the list
-            if (counter < 3) {
-                //optional set id
-                const albumCoverChild = document.createElement("div");
-                const albumTitle = document.createElement("h3");
-                const albumImage = document.createElement("img");
-
-                albumImage.setAttribute("src", element.album.images[0].url);
-                albumTitle.textContent = element.name;
-                albumCoverChild.appendChild(albumTitle);
-                albumCoverChild.appendChild(albumImage);
-
-                albumCoverParent.appendChild(albumCoverChild);
-            } else {
-                //this creates a simple list element to display the track name
-                const item = document.createElement("li");
-                item.textContent = element.name;
-                trackTitles.appendChild(item);
-            }
-
-            counter++;
-        });
+            </>
+        );
+    } catch (error) {
+        console.log(error);
     }
     listParent.appendChild(albumCoverParent);
     listParent.appendChild(trackTitles);
@@ -159,7 +153,6 @@ function tallyArtists(tracks) {
     });
 
     // The combinedArtists array now contains all the artists from the JSON data
-    console.log(tally);
     const dataArray = Object.entries(tally);
     dataArray.sort((a, b) => b[1] - a[1]);
     return dataArray;
@@ -174,6 +167,9 @@ function populateTopArtists(artists) {
 }
 
 function Statistics() {
+    const [shortTerm, setShortTerm] = useState([]);
+    const [mediumTerm, setMediumTerm] = useState([]);
+    const [longTerm, setLongTerm] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
@@ -189,14 +185,12 @@ function Statistics() {
                         topTracks(accessToken, "medium_term"),
                         topTracks(accessToken, "long_term"),
                     ]);
-                    console.log(short_term_tracks);
-                    const combineTerms = [...short_term_tracks.items, ...medium_term_tracks.items, ...long_term_tracks.items];
-                    const talliedArtists = tallyArtists(combineTerms);
-                    populateTopArtists(talliedArtists.slice(0, 10));
-
-                    populateTracks(short_term_tracks, "short");
-                    populateTracks(medium_term_tracks, "medium");
-                    populateTracks(long_term_tracks, "long");
+                    setShortTerm(short_term_tracks);
+                    setMediumTerm(medium_term_tracks);
+                    setLongTerm(long_term_tracks);
+                    // const combineTerms = [...short_term_tracks.items, ...medium_term_tracks.items, ...long_term_tracks.items];
+                    // const talliedArtists = tallyArtists(combineTerms);
+                    // populateTopArtists(talliedArtists.slice(0, 10));
 
                 } catch (error) {
                     console.log(error);
@@ -216,40 +210,20 @@ function Statistics() {
 
             <div>
                 <h2>Past Month</h2>
-                <div id="short" />
+                {populateTracks(shortTerm)}
             </div>
 
             <div>
                 <h2>Past Six Months</h2>
-                <div id="medium" />
+                {populateTracks(mediumTerm)}
             </div>
 
             <div>
                 <h2>Total history</h2>
-                <div id="long" />
+                {populateTracks(longTerm)}
             </div>
         </div>
     );
 }
 
 export default Statistics;
-
-//setting the album src
-// <img id="picture" />
-// const pic = document.getElementById("picture");
-// pic.setAttribute("src", short_term_tracks.items[0].album.images[0].url);
-
-    // useEffect(() => {
-    //     async function fetchData() {
-    //         const code = params.get("code");
-    //         if (!code) {
-    //             redirectToAuthCodeFlow(clientId);
-    //         } else {
-    //             const accessToken = await getAccessToken(clientId, code);
-    //             const tracks = await topTracks(accessToken);
-    //             populateTracks(tracks);
-    //         }
-    //     }
-
-    //     fetchData();
-    // }, []);
