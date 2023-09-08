@@ -63,7 +63,7 @@ async function getAccessToken(clientId, code) {
 }
 
 async function topTracks(token, length) {
-    let endpoint = "https://api.spotify.com/v1/me/top/tracks?limit=10"; //time_range defaults to medium_term if not specified
+    let endpoint = "https://api.spotify.com/v1/me/top/tracks?limit=20"; //time_range defaults to medium_term if not specified
     if (length != undefined) {
         endpoint = endpoint += "&time_range=" + length
     }
@@ -80,15 +80,63 @@ async function topTracks(token, length) {
     }
 }
 
+<div id="listParent">
+    <div id="albumCoverParent">
+        <div id="albumCoverChildren">
+            <h3>Album Title</h3>
+            <img>actual image</img>
+        </div>
+        <div id="albumCoverChildren">
+            <h3>Album Title</h3>
+            <img>actual image</img>
+        </div>
+        <div id="albumCoverChildren">
+            <h3>Album Title</h3>
+            <img>actual image</img>
+        </div>
+    </div>
+
+    <ol>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ol>
+</div>
+
 function populateTracks(tracks, term) {
-    const list = document.getElementById(term)
+    const listParent = document.getElementById(term);
+    const albumCoverParent = document.createElement("div");
+    const trackTitles = document.createElement("ol");
+    let counter = 0;
+    trackTitles.start = 4;
+
     if (tracks.items != undefined) {
         tracks.items.forEach(element => {
-            const item = document.createElement("li");
-            item.textContent = element.name;
-            list.appendChild(item);
+            //this statement is to display the album cover of the top three songs on the list
+            if (counter < 3) {
+                //optional set id
+                const albumCoverChild = document.createElement("div");
+                const albumTitle = document.createElement("h3");
+                const albumImage = document.createElement("img");
+
+                albumImage.setAttribute("src", element.album.images[0].url);
+                albumTitle.textContent = element.name;
+                albumCoverChild.appendChild(albumTitle);
+                albumCoverChild.appendChild(albumImage);
+
+                albumCoverParent.appendChild(albumCoverChild);
+            } else {
+                //this creates a simple list element to display the track name
+                const item = document.createElement("li");
+                item.textContent = element.name;
+                trackTitles.appendChild(item);
+            }
+
+            counter++;
         });
     }
+    listParent.appendChild(albumCoverParent);
+    listParent.appendChild(trackTitles);
 }
 
 function tallyArtists(tracks) {
@@ -141,10 +189,9 @@ function Statistics() {
                         topTracks(accessToken, "medium_term"),
                         topTracks(accessToken, "long_term"),
                     ]);
+                    console.log(short_term_tracks);
                     const combineTerms = [...short_term_tracks.items, ...medium_term_tracks.items, ...long_term_tracks.items];
-                    // console.log(combineTerms);
                     const talliedArtists = tallyArtists(combineTerms);
-                    console.log(talliedArtists);
                     populateTopArtists(talliedArtists.slice(0, 10));
 
                     populateTracks(short_term_tracks, "short");
@@ -154,7 +201,6 @@ function Statistics() {
                 } catch (error) {
                     console.log(error);
                 }
-
             }
         }
 
@@ -163,17 +209,25 @@ function Statistics() {
 
     return (
         <div id="tracks">
-            <h2>Most listened to Artists from recent tracks</h2>
-            <ol id="artists" />
+            <div>
+                <h2>Most listened to Artists from recent tracks</h2>
+                <ol id="artists" />
+            </div>
 
-            <h2>Past Month</h2>
-            <ol id="short" />
+            <div>
+                <h2>Past Month</h2>
+                <div id="short" />
+            </div>
 
-            <h2>Past Six Months</h2>
-            <ol id="medium" />
+            <div>
+                <h2>Past Six Months</h2>
+                <div id="medium" />
+            </div>
 
-            <h2>Total history</h2>
-            <ol id="long" />
+            <div>
+                <h2>Total history</h2>
+                <div id="long" />
+            </div>
         </div>
     );
 }
