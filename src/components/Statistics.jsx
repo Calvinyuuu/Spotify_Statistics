@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-const clientId = ""; // Replace with your 
+const clientId = import.meta.env.VITE_API_KEY; // Replace with your 
 const params = new URLSearchParams(window.location.search);
 const { protocol, port, hostname } = window.location;
 const redirectURL = `${protocol}//${hostname}:${port}/callback`
@@ -129,8 +129,6 @@ function populateTracks(tracks) {
     } catch (error) {
         console.log(error);
     }
-    listParent.appendChild(albumCoverParent);
-    listParent.appendChild(trackTitles);
 }
 
 function tallyArtists(tracks) {
