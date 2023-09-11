@@ -18,6 +18,18 @@
   -webkit-text-size-adjust: 100%;
 }
 
+ol {
+  padding: 20px;
+  list-style-type: decimal;
+
+}
+
+ol li {
+  float: left;
+  margin: 0 10px;
+  padding: 0 10px;
+}
+
 a {
   font-weight: 500;
   color: #646cff;

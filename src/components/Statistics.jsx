@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import Card from './Card';
+import TrackList from './TrackList';
 
 const clientId = import.meta.env.VITE_API_KEY; // Replace with your 
 const params = new URLSearchParams(window.location.search);
@@ -83,45 +85,20 @@ async function topTracks(token, length) {
 function populateTracks(tracks) {
     try {
         const tracksWithHeaders = tracks.items.slice(0, 3);
-        const tracksInListBeg = tracks.items.slice(3, 10);
-        const tracksInListEnd = tracks.items.slice(10, 20);
+        const tracksInList = tracks.items.slice(3, 20);
+        //reminder to put a carousel
         return (
             <>
+
                 {tracksWithHeaders.length && (
-                    <div className="flex">
+                    <div className="flex flex-wrap p-3">
                         {tracksWithHeaders.map((track) => (
-                            <div key={track.id}>
-                                <h3>
-                                    {track.name}
-                                </h3>
-                                <img src={track.album.images[0].url}></img>
-                            </div>
+                            <Card track={track} />
                         ))}
                     </div>
                 )}
-                <div className="flex">
-                    {tracksInListBeg.length && (
-                        <div>
-                            <ol start="4" className="px-4">
-                                {tracksInListBeg.map((track) => (
-                                    <li key={track.id}>
-                                        {track.name}
-                                    </li>
-                                ))}
-                            </ol>
-                        </div>
-                    )}
-                    {tracksInListEnd.length && (
-                        <div>
-                            <ol start="11" className="px-4">
-                                {tracksInListEnd.map((track) => (
-                                    <li key={track.id}>
-                                        {track.name}
-                                    </li>
-                                ))}
-                            </ol>
-                        </div>
-                    )}
+                <div className="flex p-3">
+                    <TrackList tracks={tracksInList} />
                 </div>
 
             </>
