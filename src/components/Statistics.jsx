@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import Card from './Card';
+import TrackCard from './TrackCarouselCard';
 import TrackList from './TrackList';
+import { CarouselDefault } from './Carousel';
 
 const clientId = import.meta.env.VITE_API_KEY; // Replace with your 
 const params = new URLSearchParams(window.location.search);
@@ -64,7 +65,7 @@ async function getAccessToken(clientId, code) {
     return access_token;
 }
 
-async function topTracks(token, length) {
+async function getTopTracks(token, length) {
     let endpoint = "https://api.spotify.com/v1/me/top/tracks?limit=20"; //time_range defaults to medium_term if not specified
     if (length != undefined) {
         endpoint = endpoint += "&time_range=" + length
@@ -89,18 +90,20 @@ function populateTracks(tracks) {
         //reminder to put a carousel
         return (
             <>
-
-                {tracksWithHeaders.length && (
-                    <div className="flex flex-wrap p-3">
-                        {tracksWithHeaders.map((track) => (
-                            <Card track={track} />
-                        ))}
+                <div className="flex">
+                    <div className="flex w-2/5 h-[85vh] m-3">
+                        <CarouselDefault>
+                            {tracksWithHeaders.length && (
+                                tracksWithHeaders.map((track) => (
+                                    <TrackCard track={track} key={track.id} />
+                                ))
+                            )}
+                        </CarouselDefault>
                     </div>
-                )}
-                <div className="flex p-3">
-                    <TrackList tracks={tracksInList} />
+                    <div className="flex w-2/5 m-3 h-[85vh] overflow-y-auto rounded-lg">
+                        <TrackList tracks={tracksInList} />
+                    </div>
                 </div>
-
             </>
         );
     } catch (error) {
@@ -156,9 +159,9 @@ function Statistics() {
                     const accessToken = await getAccessToken(clientId, code);
 
                     const [short_term_tracks, medium_term_tracks, long_term_tracks] = await Promise.all([
-                        topTracks(accessToken, "short_term"),
-                        topTracks(accessToken, "medium_term"),
-                        topTracks(accessToken, "long_term"),
+                        getTopTracks(accessToken, "short_term"),
+                        getTopTracks(accessToken, "medium_term"),
+                        getTopTracks(accessToken, "long_term"),
                     ]);
                     setShortTerm(short_term_tracks);
                     setMediumTerm(medium_term_tracks);
