@@ -85,23 +85,23 @@ async function getTopTracks(token, length) {
     }
 }
 
-function populateTracks(tracks, token) {
+function populateTracks(tracks) {
     try {
         const tracksWithHeaders = tracks.items.slice(0, 3);
         const tracksInList = tracks.items.slice(3, 20);
         return (
             <>
-                <div className="flex">
-                    <div className="flex w-2/5 h-[85vh] m-3">
+                <div className="flex justify-center h-screen">
+                    <div className="flex w-2/5 h-[80vh] m-3">
                         <CarouselDefault>
                             {tracksWithHeaders.length && (
                                 tracksWithHeaders.map((track) => (
-                                    <TrackCard track={track} accessToken={token} key={track.id} />
+                                    <TrackCard track={track} key={track.id} />
                                 ))
                             )}
                         </CarouselDefault>
                     </div>
-                    <div className="flex w-2/5 m-3 h-[85vh] overflow-y-auto rounded-lg">
+                    <div className="flex w-2/5 m-3 h-[80vh] overflow-y-auto rounded-lg">
                         <TrackList tracks={tracksInList} />
                     </div>
                 </div>
@@ -183,25 +183,22 @@ function Statistics() {
     }, []);
 
     return (
-        <div id="tracks">
+        <div id="tracks" className="max-w-screen">
+
+            <div>
+                {populateTracks(shortTerm)}
+            </div>
+
+            <div>
+                {populateTracks(mediumTerm)}
+            </div>
+
+            <div>
+                {populateTracks(longTerm)}
+            </div>
             <div>
                 <h2>Most listened to Artists from recent tracks</h2>
                 <ol id="artists" />
-            </div>
-
-            <div>
-                <h2>Past Month</h2>
-                {populateTracks(shortTerm, token)}
-            </div>
-
-            <div>
-                <h2>Past Six Months</h2>
-                {populateTracks(mediumTerm, token)}
-            </div>
-
-            <div>
-                <h2>Total history</h2>
-                {populateTracks(longTerm, token)}
             </div>
             <div className="sticky bottom-0">
                 <Player accessToken={token} trackUri={uri} />

@@ -8,7 +8,7 @@ function App() {
 
   return (
     <TrackContext.Provider value={{ uri: currentTrack, setUri: setCurrentTrack }}>
-      <h1>Welcome to shitty spotify wrapped</h1>
+      <h1>Welcome to !Spotify Wrapped</h1>
       <Statistics />
     </TrackContext.Provider>
   )
