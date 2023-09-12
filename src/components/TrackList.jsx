@@ -9,20 +9,18 @@ export function TrackList({ tracks }) {
   const { setUri } = useContext(TrackContext);
   return (
     <Card>
-      <List className="bg-blue-gray-700">
+      <List className="text-[#003E5C] bg-[#BFD7EA]">
         {tracks.map((track, index) => (
-          <ListItem ripple={false} key={index} className="hover:bg-blue-gray-700" onClick={() => setUri(track.uri)}>
-            <CardHeader floated={false} className="w-1/3">
-              <img src={track.album.images[0].url} alt={track.id} />
-            </CardHeader >
-            <CardBody className="text-center w-2/3">
-              <Typography variant="h4" color="blue-gray" className="mb-2">
-                {index + 4 + ". " + track.name}
-              </Typography>
-              <Typography color="blue-gray" className="font-medium" textGradient>
-                {track.album.name}
-              </Typography>
-            </CardBody>
+          <ListItem key={index} className="hover:bg-blue-gray-700" onClick={() => setUri(track.uri)}>
+            <div className="flex">
+              <div className="w-1/3">
+                <img src={track.album.images[0].url} alt={track.id} />
+              </div>
+              <div className="text-center m-auto w-2/3 pl-4">
+                <h1 className="font-bold text-2xl"> {index + 4 + ". " + track.name}</h1>
+                <h3 className="text-[#007BB8] font-semibold">{track.album.name}</h3>
+              </div>
+            </div>
           </ListItem>
         ))}
       </List>

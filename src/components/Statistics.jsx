@@ -85,7 +85,7 @@ async function getTopTracks(token, length) {
     }
 }
 
-function populateTracks(tracks) {
+function populateTracks(tracks, duration) {
     try {
         const tracksWithHeaders = tracks.items.slice(0, 3);
         const tracksInList = tracks.items.slice(3, 20);
@@ -96,7 +96,7 @@ function populateTracks(tracks) {
                         <CarouselDefault>
                             {tracksWithHeaders.length && (
                                 tracksWithHeaders.map((track) => (
-                                    <TrackCard track={track} key={track.id} />
+                                    <TrackCard track={track} term={duration} key={track.id} />
                                 ))
                             )}
                         </CarouselDefault>
@@ -159,6 +159,7 @@ function Statistics() {
                 redirectToAuthCodeFlow(clientId);
             } else {
                 try {
+                    window.history.pushState({}, null, "/");
                     const accessToken = await getAccessToken(clientId, code);
                     const [short_term_tracks, medium_term_tracks, long_term_tracks] = await Promise.all([
                         getTopTracks(accessToken, "short_term"),
@@ -184,17 +185,20 @@ function Statistics() {
 
     return (
         <div id="tracks" className="max-w-screen">
+            <h1>
+                Click on any of the cards!
+            </h1>
 
             <div>
-                {populateTracks(shortTerm)}
+                {populateTracks(shortTerm, "Last Month")}
             </div>
 
             <div>
-                {populateTracks(mediumTerm)}
+                {populateTracks(mediumTerm, "Last Six Months")}
             </div>
 
             <div>
-                {populateTracks(longTerm)}
+                {populateTracks(longTerm, "Last Few Years")}
             </div>
             <div>
                 <h2>Most listened to Artists from recent tracks</h2>

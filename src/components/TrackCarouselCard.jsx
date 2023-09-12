@@ -1,38 +1,37 @@
-import {
-    Card,
-    CardHeader,
-    CardBody,
-    CardFooter,
-    Typography,
-} from "@material-tailwind/react";
+import { Card } from "@material-tailwind/react";
 import { useContext } from "react";
 import TrackContext from "./TrackContext";
+import spotify_black from "../assets/Spotify_Logo_CMYK_Black.png";
 
-function TrackCard({ track }) {
+function TrackCard({ track, term }) {
     const { setUri } = useContext(TrackContext);
     return (
-        <Card className="bg-blue-gray-700 w-[inherit] h-[inherit] flex flex-col justify-center items-center p-3"
+        <Card className="text-[#003E5C] bg-[#BFD7EA] w-[inherit] h-[inherit] flex flex-col justify-center items-center p-3 hover:cursor-pointer"
             onClick={() => setUri(track.uri)}>
-            <CardHeader floated={false} className="bg-blue-gray-700" shadow={false}>
-
-                <img src={track.album.images[0].url} alt={track.id} />
-            </CardHeader >
-
-            <CardBody className="text-center">
-                <Typography variant="h4" color="black" className="mb-2">
-                    {track.name}
-                </Typography>
-            </CardBody>
-
-            <CardFooter className="flex flex-col justify-center gap-7 pt-2">
-                <div className="flex gap-3">
-                    {track.artists.map((artist) => (
-                        <Typography variant="h4" color="blue-gray" className="text-center" key={artist.id}>
-                            {artist.name}
-                        </Typography>
-                    ))}
+            <div>
+                <div>
+                    <div className="flex justify-between">
+                        <img src={spotify_black} className="h-10"></img>
+                        <h1 className="my-auto font-semibold text-4xl">{term}</h1>
+                    </div>
+                    <div className="font-bold text-5xl my-2 text-center">
+                        <h1>GENERAL ADMISSION</h1>
+                    </div>
                 </div>
-            </CardFooter>
+                <div>
+                    <img src={track.album.images[0].url} alt={track.id} />
+                </div>
+                <div className="my-3 font-semibold">
+                    <h2 className="text-center mb-0">{track.name}</h2>
+                    <div className="flex gap-3 justify-center">
+                        {track.artists.map((artist) => (
+                            <h2 className="text-center" key={artist.id}>
+                                {artist.name}
+                            </h2>
+                        ))}
+                    </div>
+                </div>
+            </div>
         </Card >
     );
 }
