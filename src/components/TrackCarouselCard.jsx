@@ -5,10 +5,14 @@ import {
     CardFooter,
     Typography,
 } from "@material-tailwind/react";
+import { useContext } from "react";
+import TrackContext from "./TrackContext";
 
 function TrackCard({ track }) {
+    const { setUri } = useContext(TrackContext);
     return (
-        <Card className="bg-blue-gray-700 w-[inherit] h-[inherit] flex flex-col justify-center items-center p-3">
+        <Card className="bg-blue-gray-700 w-[inherit] h-[inherit] flex flex-col justify-center items-center p-3"
+            onClick={() => setUri(track.uri)}>
             <CardHeader floated={false} className="bg-blue-gray-700" shadow={false}>
                 <Typography variant="h4" color="black" className="mb-2">
                     {track.name}
@@ -21,9 +25,9 @@ function TrackCard({ track }) {
 
             <CardFooter className="flex flex-col justify-center gap-7 pt-2">
                 <div className="flex gap-3">
-                    {track.artists.map((track) => (
-                        <Typography variant="h4" color="blue-gray" className="text-center">
-                            {track.name}
+                    {track.artists.map((artist) => (
+                        <Typography variant="h4" color="blue-gray" className="text-center" key={artist.id}>
+                            {artist.name}
                         </Typography>
                     ))}
                 </div>
@@ -36,25 +40,3 @@ function TrackCard({ track }) {
 }
 
 export default TrackCard;
-
-// function Card({ track }) {
-//     return (
-//         <div
-//             className=" rounded-lg bg-blue-gray-700 w-[inherit] flex flex-col justify-center items-center p-3" key={track.id}>
-//             <h3>Spotify Logo</h3>
-//             <h2>Admit One replace with picture?</h2>
-//             <img
-//                 src={track.album.images[0].url}
-//                 alt="track album cover" />
-//             <div className="p-6">
-//                 <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
-//                     {track.name}
-//                 </h5>
-//                 <p>Remember to put the play button here</p>
-//             </div>
-//         </div>
-
-//     )
-// }
-
-// export default Card;
