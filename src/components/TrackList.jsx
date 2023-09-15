@@ -12,13 +12,14 @@ export function TrackList({ tracks }) {
         {tracks.map((track, index) => (
           <ListItem key={index} className="hover:bg-blue-gray-700" onClick={() => setUri(track.uri)}>
 
-            <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+            <div className="w-full">
               <img src={track.album.images[0].url} alt={track.id} />
             </div>
 
-            <div className="text-center m-auto w-full md:w-1/2 lg:w-2/3 xl:w-3/4 pl-4">
-              <h1 className="font-bold text-2xl"> {index + 4 + ". " + track.name}</h1>
-              <h3 className="text-[#007BB8] font-semibold">{track.album.name}</h3>
+            <div className="text-center w-full pl-4">
+              <h1 className="font-semibold"> {index + 4 + ". " + track.name}</h1>
+              {/* should i keep this colour for the artist text? */}
+              <h3 className="text-[#007BB8] font-light text-xs">{track.album.name}</h3>
             </div>
 
           </ListItem>

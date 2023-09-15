@@ -91,8 +91,8 @@ function populateTracks(tracks, duration) {
         const tracksInList = tracks.items.slice(3, 20);
 
         return (
-            <div className="flex flex-col w-full">
-                <div className="flex h-4/5 w-4/6 mx-auto  bg-[#BFD7EA]">
+            <div className="flex flex-col w-full mt-5">
+                <div className="flex h-4/5 w-4/6 mx-auto bg-[#BFD7EA] rounded-t-lg">
                     <CarouselDefault>
                         {tracksWithHeaders.length && (
                             tracksWithHeaders.map((track) => (
@@ -102,7 +102,7 @@ function populateTracks(tracks, duration) {
                     </CarouselDefault>
                 </div>
 
-                <div className="flex h-[43vh] w-4/6 mx-auto overflow-y-auto">
+                <div className="flex h-[42vh] w-4/6 mx-auto overflow-y-auto rounded-b-lg">
                     <TrackList tracks={tracksInList} />
                 </div>
 
@@ -195,11 +195,11 @@ function Statistics() {
             </div>
 
             <div>
-                {/* {populateTracks(mediumTerm, "Last Six Months")} */}
+                {populateTracks(mediumTerm, "Last Six Months")}
             </div>
 
             <div>
-                {/* {populateTracks(longTerm, "Last Few Years")} */}
+                {populateTracks(longTerm, "Last Few Years")}
             </div>
             {/* <div>
                 <h2>Most listened to Artists from recent tracks</h2>
