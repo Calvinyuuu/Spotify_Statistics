@@ -1,4 +1,4 @@
-import { Statistics, TrackContext } from './components';
+import { Statistics, TrackContext, Hero } from './components';
 import { useState } from 'react';
 
 
@@ -8,7 +8,7 @@ function App() {
 
   return (
     <TrackContext.Provider value={{ uri: currentTrack, setUri: setCurrentTrack }}>
-      <h1>Welcome to !Spotify Wrapped</h1>
+      <Hero />
       <Statistics />
     </TrackContext.Provider>
   )

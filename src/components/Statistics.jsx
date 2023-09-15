@@ -89,24 +89,29 @@ function populateTracks(tracks, duration) {
     try {
         const tracksWithHeaders = tracks.items.slice(0, 3);
         const tracksInList = tracks.items.slice(3, 20);
+
         return (
-            <>
-                <div className="flex justify-center h-screen">
-                    <div className="flex w-2/5 h-[80vh] m-3">
-                        <CarouselDefault>
-                            {tracksWithHeaders.length && (
-                                tracksWithHeaders.map((track) => (
-                                    <TrackCard track={track} term={duration} key={track.id} />
-                                ))
-                            )}
-                        </CarouselDefault>
-                    </div>
-                    <div className="flex w-2/5 m-3 h-[80vh] overflow-y-auto rounded-lg">
-                        <TrackList tracks={tracksInList} />
-                    </div>
+            <div className="flex flex-col w-full">
+                <div className="flex h-4/5 w-4/6 mx-auto  bg-[#BFD7EA]">
+                    <CarouselDefault>
+                        {tracksWithHeaders.length && (
+                            tracksWithHeaders.map((track) => (
+                                <TrackCard track={track} term={duration} key={track.id} />
+                            ))
+                        )}
+                    </CarouselDefault>
                 </div>
-            </>
+
+                <div className="flex h-[43vh] w-4/6 mx-auto overflow-y-auto">
+                    <TrackList tracks={tracksInList} />
+                </div>
+
+            </div>
+
         );
+
+
+
     } catch (error) {
         // console.log(error);
     }
@@ -185,25 +190,21 @@ function Statistics() {
 
     return (
         <div id="tracks" className="max-w-screen">
-            <h1>
-                Click on any of the cards!
-            </h1>
-
             <div>
                 {populateTracks(shortTerm, "Last Month")}
             </div>
 
             <div>
-                {populateTracks(mediumTerm, "Last Six Months")}
+                {/* {populateTracks(mediumTerm, "Last Six Months")} */}
             </div>
 
             <div>
-                {populateTracks(longTerm, "Last Few Years")}
+                {/* {populateTracks(longTerm, "Last Few Years")} */}
             </div>
-            <div>
+            {/* <div>
                 <h2>Most listened to Artists from recent tracks</h2>
                 <ol id="artists" />
-            </div>
+            </div> */}
             <div className="sticky bottom-0">
                 <Player accessToken={token} trackUri={uri} />
             </div>

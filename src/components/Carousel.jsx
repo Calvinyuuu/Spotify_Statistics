@@ -3,14 +3,13 @@ import { Carousel, IconButton } from "@material-tailwind/react";
 export function CarouselDefault({ children }) {
     return (
         <Carousel
-            className="rounded-xl"
             prevArrow={({ handlePrev }) => (
                 <IconButton
                     variant="text"
                     color="white"
                     size="sm"
                     onClick={handlePrev}
-                    className="!absolute top-2/4 left-4 -translate-y-2/4"
+                    className="!absolute top-2/4"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +33,7 @@ export function CarouselDefault({ children }) {
                     color="white"
                     size="sm"
                     onClick={handleNext}
-                    className="!absolute top-2/4 !right-4 -translate-y-2/4"
+                    className="!absolute top-2/4 !right-0"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
