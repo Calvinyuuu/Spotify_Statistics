@@ -10,7 +10,11 @@ export function TrackList({ tracks }) {
     <Card>
       <List className="text-[#003E5C] bg-[#BFD7EA]">
         {tracks.map((track, index) => (
-          <ListItem key={index} className="hover:bg-blue-gray-700" onClick={() => setUri(track.uri)}>
+          <ListItem
+            key={index}
+            className={`hover:bg-blue-gray-700 rounded-none ${index !== tracks.length - 1 ? 'border-b border-black' : ''}`}
+            onClick={() => setUri(track.uri)}
+          >
 
             <div className="w-full">
               <img src={track.album.images[0].url} alt={track.id} />
@@ -21,7 +25,6 @@ export function TrackList({ tracks }) {
               {/* should i keep this colour for the artist text? */}
               <h3 className="text-[#007BB8] font-light text-xs">{track.album.name}</h3>
             </div>
-
           </ListItem>
         ))}
       </List>
