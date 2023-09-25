@@ -91,8 +91,8 @@ function populateTracks(tracks, duration) {
         const tracksInList = tracks.items.slice(3, 20);
 
         return (
-            <div className="flex flex-col w-full mt-5">
-                <div className="flex h-4/5 w-4/6 mx-auto bg-[#BFD7EA] rounded-t-lg">
+            <div className="flex flex-col w-full mt-5 xl:flex-row xl:w-3/4 xl:m-auto xl:gap-x-2 xl:pb-3 xl:h-screen xl:self-center">
+                <div className="flex h-4/5 w-4/6 mx-auto bg-[#BFD7EA] rounded-t-lg xl:rounded-lg xl:content-center">
                     <CarouselDefault>
                         {tracksWithHeaders.length && (
                             tracksWithHeaders.map((track) => (
@@ -102,7 +102,7 @@ function populateTracks(tracks, duration) {
                     </CarouselDefault>
                 </div>
 
-                <div className="flex h-[42vh] w-4/6 mx-auto overflow-y-auto rounded-b-lg">
+                <div className="flex h-[42vh] w-4/6 mx-auto overflow-y-auto rounded-b-lg xl:rounded-lg xl:h-4/5">
                     <TrackList tracks={tracksInList} />
                 </div>
 

@@ -21,9 +21,9 @@ export function TrackList({ tracks }) {
             </div>
 
             <div className="text-center w-full pl-4">
-              <h1 className="font-semibold"> {index + 4 + ". " + track.name}</h1>
+              <h1 className="font-semibold xl:text-xl"> {index + 4 + ". " + track.name}</h1>
               {/* should i keep this colour for the artist text? */}
-              <h3 className="text-[#007BB8] font-light text-xs">{track.album.name}</h3>
+              <h3 className="text-[#007BB8] font-light text-xs xl:text-base">{track.album.name}</h3>
             </div>
           </ListItem>
         ))}
