@@ -1,7 +1,7 @@
 import { Card } from "@material-tailwind/react";
 import { useContext } from "react";
 import TrackContext from "./TrackContext";
-import spotify_black from "../assets/Spotify_Logo_CMYK_Black.png";
+import { spotify_black } from "../assets";
 
 function TrackCard({ track, term }) {
     const { setUri } = useContext(TrackContext);
