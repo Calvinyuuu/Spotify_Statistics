@@ -5,7 +5,7 @@ import { CarouselDefault } from './Carousel';
 import Player from './Player';
 import TrackContext from './TrackContext';
 
-const clientId = import.meta.env.VITE_API_KEY; // Replace with your 
+const clientId = import.meta.env.VITE_API_KEY;
 const params = new URLSearchParams(window.location.search);
 const { protocol, port, hostname } = window.location;
 const redirectURL = `${protocol}//${hostname}:${port}/UnWrapped/callback`
