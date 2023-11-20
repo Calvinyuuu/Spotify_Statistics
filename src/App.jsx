@@ -13,7 +13,4 @@ function App() {
     </TrackContext.Provider>
   )
 }
-
-
-
 export default App
