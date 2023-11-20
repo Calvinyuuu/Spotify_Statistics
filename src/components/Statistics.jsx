@@ -131,6 +131,8 @@ function Statistics() {
                 redirectToAuthCodeFlow(clientId);
             } else {
                 try {
+                    console.log("API Key:", import.meta.env.VITE_API_KEY);
+
                     window.history.pushState({}, null, "/");
                     const accessToken = await getAccessToken(clientId, code);
                     const [short_term_tracks, medium_term_tracks, long_term_tracks] = await Promise.all([
