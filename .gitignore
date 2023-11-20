@@ -9,8 +9,6 @@ lerna-debug.log*
 .env
 
 node_modules
-dist
-dist-ssr
 *.local
 
 # Editor directories and files
@@ -23,3 +21,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Include dist only in the gh-pages branch
+!dist
