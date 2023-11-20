@@ -8,7 +8,7 @@ import TrackContext from './TrackContext';
 const clientId = import.meta.env.VITE_API_KEY; // Replace with your 
 const params = new URLSearchParams(window.location.search);
 const { protocol, port, hostname } = window.location;
-const redirectURL = `${protocol}//${hostname}:${port}/callback`
+const redirectURL = `${protocol}//${hostname}:${port}/UnWrapped/callback`
 
 async function redirectToAuthCodeFlow(clientId) {
     const verifier = generateCodeVerifier(128);
