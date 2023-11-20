@@ -113,41 +113,8 @@ function populateTracks(tracks, duration) {
 
 
     } catch (error) {
-        // console.log(error);
+        error
     }
-}
-
-function tallyArtists(tracks) {
-    const tally = {};
-    // Initialize an empty array for combined artists
-    const combinedArtists = [];
-
-    // Iterate through the JSON data
-    tracks.forEach(item => {
-        // Concatenate the artists array with the combined artists array
-        combinedArtists.push(...item.artists);
-    });
-
-    combinedArtists.forEach(item => {
-        if (tally[item.name]) {
-            tally[item.name]++;
-        } else {
-            tally[item.name] = 1;
-        }
-    });
-
-    // The combinedArtists array now contains all the artists from the JSON data
-    const dataArray = Object.entries(tally);
-    dataArray.sort((a, b) => b[1] - a[1]);
-    return dataArray;
-}
-function populateTopArtists(artists) {
-    const list = document.getElementById("artists");
-    artists.forEach(element => {
-        const item = document.createElement("li");
-        item.textContent = element[0];
-        list.appendChild(item);
-    })
 }
 
 function Statistics() {
@@ -175,12 +142,9 @@ function Statistics() {
                     setShortTerm(short_term_tracks);
                     setMediumTerm(medium_term_tracks);
                     setLongTerm(long_term_tracks);
-                    // const combineTerms = [...short_term_tracks.items, ...medium_term_tracks.items, ...long_term_tracks.items];
-                    // const talliedArtists = tallyArtists(combineTerms);
-                    // populateTopArtists(talliedArtists.slice(0, 10));
 
                 } catch (error) {
-                    // console.log(error);
+                    error
                 }
             }
         }
@@ -201,10 +165,7 @@ function Statistics() {
             <div>
                 {populateTracks(longTerm, "Last Few Years")}
             </div>
-            {/* <div>
-                <h2>Most listened to Artists from recent tracks</h2>
-                <ol id="artists" />
-            </div> */}
+
             <div className="sticky bottom-0">
                 <Player accessToken={token} trackUri={uri} />
             </div>
