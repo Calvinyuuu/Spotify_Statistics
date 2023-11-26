@@ -25,6 +25,7 @@ async function redirectToAuthCodeFlow(clientId) {
     const params = new URLSearchParams();
     params.append("client_id", clientId);
     params.append("response_type", "code");
+    console.log(redirectURL);
     params.append("redirect_uri", redirectURL);
     //need to change this depending on what im requesting.
     params.append("scope", "streaming user-read-private user-read-email user-read-playback-state user-modify-playback-state user-library-read user-read-recently-played user-top-read");
