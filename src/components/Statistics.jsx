@@ -10,10 +10,10 @@ const params = new URLSearchParams(window.location.search);
 const { protocol, port, hostname } = window.location;
 let redirectURL = ""
 
-if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'development') {
     redirectURL = `${protocol}//${hostname}:${port}/UnWrapped/callback`;
 } else {
-    redirectURL = `https://calvinyuuu.github.io/UnWrapped/callback`;
+    redirectURL = "http://calvinyuuu.github.io/UnWrapped/callback";
 }
 
 async function redirectToAuthCodeFlow(clientId) {
