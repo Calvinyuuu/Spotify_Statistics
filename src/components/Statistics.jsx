@@ -8,7 +8,13 @@ import TrackContext from './TrackContext';
 const clientId = import.meta.env.VITE_API_KEY;
 const params = new URLSearchParams(window.location.search);
 const { protocol, port, hostname } = window.location;
-const redirectURL = `${protocol}//${hostname}:${port}/UnWrapped/callback`
+let redirectURL = null
+
+if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production') {
+    redirectURL = `${protocol}//${hostname}:${port}/UnWrapped/callback`;
+} else {
+    redirectURL = `https://calvinyuuu.github.io/UnWrapped/callback`;
+}
 
 async function redirectToAuthCodeFlow(clientId) {
     const verifier = generateCodeVerifier(128);
