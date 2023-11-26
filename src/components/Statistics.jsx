@@ -13,7 +13,7 @@ let redirectURL = ""
 if (process.env.NODE_ENV === 'development') {
     redirectURL = `${protocol}//${hostname}:${port}/UnWrapped/callback`;
 } else {
-    redirectURL = "http://calvinyuuu.github.io/UnWrapped/callback";
+    redirectURL = `${protocol}//calvinyuuu.github.io/UnWrapped/callback`;
 }
 
 async function redirectToAuthCodeFlow(clientId) {
