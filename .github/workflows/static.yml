@@ -46,8 +46,10 @@ jobs:
         with:
           # Upload dist repository
           path: "./dist"
-      - name: Set up environment variables
-        run: echo "VITE_API_KEY=${{ secrets.VITE_API_KEY }}" >> $GITHUB_ENV
+      - name: Setup Env
+        run: echo "VITE_API_KEY=$VITE_API_KEY" >> $GITHUB_ENV
+        env:
+          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
