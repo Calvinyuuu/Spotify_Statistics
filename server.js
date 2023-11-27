@@ -13,6 +13,6 @@ const port = process.env.PORT || 3000;
 
 app.use('/UnWrapped', express.static(path.join(__dirname, 'dist')));
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
     console.log(`Server is running on port ${port}`);
 });
