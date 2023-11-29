@@ -22,5 +22,4 @@ node_modules
 *.sln
 *.sw?
 
-# Include dist only in the gh-pages branch
-!dist
+dist
